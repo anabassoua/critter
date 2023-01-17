@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Header";
-import Home from "./Home";
+import HomeFeed from "./HomeFeed";
+import Profile from "./Profile";
+import Notifications from "./Notifications";
+import Bookmarks from "./Bookmarks";
+import TweetDetails from "./TweetDetails";
 
 function App() {
   return (
@@ -10,10 +14,11 @@ function App() {
         <Header />
         <RightContainer>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<h1>profile</h1>} />
-            <Route path="/notifications" element={<h1>notifications</h1>} />
-            <Route path="/bookmarks" element={<h1>bookmarks</h1>} />
+            <Route path="/" element={<HomeFeed />} />
+            <Route path="/:profileId" element={<Profile />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/tweet/:tweetId" element={<TweetDetails />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
           </Routes>
         </RightContainer>
       </AppContainer>
@@ -27,7 +32,7 @@ const AppContainer = styled.div`
 
 const RightContainer = styled.div`
   flex: 3;
-  border-left: 1px solid green;
+  /* border-left: 1px solid gray; */
 `;
 
 export default App;
