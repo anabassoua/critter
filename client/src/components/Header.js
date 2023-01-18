@@ -107,7 +107,7 @@ const NotificationIcon = styled(NavLink)`
 
   &:hover {
     background-color: #ede8fe;
-    width: 90%;
+    width: 70%;
     border-radius: 20px;
     color: #5d2afa;
   }
@@ -132,7 +132,7 @@ const BookmarksIcon = styled(NavLink)`
 
   &:hover {
     background-color: #ede8fe;
-    width: 80%;
+    width: 70%;
     border-radius: 20px;
     color: #5d2afa;
   }
