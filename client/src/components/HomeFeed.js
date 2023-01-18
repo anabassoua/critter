@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { format } from "date-fns";
-import { IoRepeatSharp } from "react-icons/io5";
+import { HiArrowPath } from "react-icons/hi2";
+import TweetActions from "./TweetActions";
 
 const HomeFeed = () => {
   const [allTweets, setAllTweets] = useState([]);
@@ -35,7 +36,7 @@ const HomeFeed = () => {
               {tweet.retweetFrom && (
                 <>
                   <Retweets>
-                    <IoRepeatSharp size={20} />
+                    <HiArrowPath size={20} />
                     {tweet.retweetFrom.displayName} Remeowed
                   </Retweets>
                 </>
@@ -55,6 +56,7 @@ const HomeFeed = () => {
                   return <TweetImg src={media.url} />;
                 })}
             </Tweets>
+            <TweetActions />
           </TweetContainer>
         );
       })}
