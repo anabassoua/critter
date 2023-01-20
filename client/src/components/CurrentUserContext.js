@@ -11,7 +11,7 @@ export const CurrentUserProvider = ({ children }) => {
       .then((res) => res.json())
       .then((resData) => {
         console.log(resData);
-        setCurrentUser(resData.data);
+        setCurrentUser(resData);
         setStatus("idle");
       })
       .catch((error) => {

@@ -35,7 +35,8 @@ const RightContainer = styled.div`
   width: 55%;
   border-left: 1px solid #e1e8ed;
   border-right: 1px solid #e1e8ed;
-  padding-left: 15px;
+  padding: 0;
+  height: 100vh;
 `;
 
 export default App;

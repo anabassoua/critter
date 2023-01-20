@@ -30,6 +30,11 @@ const HomeFeed = () => {
         const tweet = allTweets.tweetsById[id];
         const formattedTimestamp = format(new Date(tweet.timestamp), "MMM dd");
 
+        let retweetCount = 0;
+        if (tweet.retweetFrom) {
+          retweetCount++;
+        }
+
         return (
           <TweetContainer key={tweet.id}>
             <div>
@@ -53,10 +58,10 @@ const HomeFeed = () => {
               <TweetStatus>{tweet.status}</TweetStatus>
               {tweet.media &&
                 tweet.media.map((media) => {
-                  return <TweetImg src={media.url} />;
+                  return <TweetImg key={media.url} src={media.url} />;
                 })}
             </Tweets>
-            <TweetActions />
+            <TweetActions retweetCount={retweetCount} />
           </TweetContainer>
         );
       })}
