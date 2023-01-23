@@ -5,8 +5,11 @@ import { AiOutlineHome } from "react-icons/ai";
 import { BiUser } from "react-icons/bi";
 import { FiBell } from "react-icons/fi";
 import { FiBookmark } from "react-icons/fi";
+import { useContext } from "react";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const Header = () => {
+  const { currentUser } = useContext(CurrentUserContext);
   return (
     <Container>
       <Logo />
@@ -14,10 +17,12 @@ const Header = () => {
         <AiOutlineHome size={35} />
         <ToHome>Home</ToHome>
       </HomeIcon>
-      <ProfileIcon to="/profile">
-        <BiUser size={35} />
-        <ToProfile>Profile</ToProfile>
-      </ProfileIcon>
+      {currentUser && (
+        <ProfileIcon to={`/${currentUser.profile.handle}`}>
+          <BiUser size={35} />
+          <ToProfile>Profile</ToProfile>
+        </ProfileIcon>
+      )}
       <NotificationIcon to="/notifications">
         <FiBell size={35} />
         <ToNotifications>Notifications</ToNotifications>

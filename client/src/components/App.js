@@ -6,22 +6,25 @@ import Profile from "./Profile";
 import Notifications from "./Notifications";
 import Bookmarks from "./Bookmarks";
 import TweetDetails from "./TweetDetails";
+import { CurrentUserProvider } from "./CurrentUserContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <AppContainer>
-        <Header />
-        <RightContainer>
-          <Routes>
-            <Route path="/" element={<HomeFeed />} />
-            <Route path="/:profileId" element={<Profile />} />
-            <Route path="/notifications" element={<Notifications />} />
-            <Route path="/tweet/:tweetId" element={<TweetDetails />} />
-            <Route path="/bookmarks" element={<Bookmarks />} />
-          </Routes>
-        </RightContainer>
-      </AppContainer>
+      <CurrentUserProvider>
+        <AppContainer>
+          <Header />
+          <RightContainer>
+            <Routes>
+              <Route path="/" element={<HomeFeed />} />
+              <Route path="/:profileId" element={<Profile />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/tweet/:tweetId" element={<TweetDetails />} />
+              <Route path="/bookmarks" element={<Bookmarks />} />
+            </Routes>
+          </RightContainer>
+        </AppContainer>
+      </CurrentUserProvider>
     </BrowserRouter>
   );
 }
@@ -36,7 +39,7 @@ const RightContainer = styled.div`
   border-left: 1px solid #e1e8ed;
   border-right: 1px solid #e1e8ed;
   padding: 0;
-  height: 100vh;
+  height: 100%;
 `;
 
 export default App;

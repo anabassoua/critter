@@ -3,10 +3,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { HiOutlineMapPin } from "react-icons/hi2";
 import { HiOutlineCalendarDays } from "react-icons/hi2";
+import { HiArrowPath } from "react-icons/hi2";
 import { format } from "date-fns";
+import TweetActions from "./TweetActions";
+import Spinner from "./Spinner";
+import { spinner3 } from "react-icons-kit/icomoon/spinner3";
 
 const Profile = () => {
   const [user, setUser] = useState({});
+  const [tweetFeed, setTweetFeed] = useState([]);
   const { profileId } = useParams();
   const [loading, setLoading] = useState(true);
 
@@ -15,17 +20,34 @@ const Profile = () => {
     fetch(`/api/${profileId}/profile`)
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         setUser(resData);
         setLoading(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [profileId]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/${profileId}/feed`)
+      .then((res) => res.json())
+      .then((resData) => {
+        console.log(resData);
+        setTweetFeed(resData);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [profileId]);
 
   if (loading) {
-    return <h1>loading...</h1>;
+    return (
+      <SpinnerContainer>
+        <Spinner icon={spinner3} size={35} />
+      </SpinnerContainer>
+    );
   }
 
   // console.log(user.profile);
@@ -36,52 +58,99 @@ const Profile = () => {
   const formattedTime = format(new Date(user.profile.joined), "MMMM dd");
 
   return (
-    <ParentContainer>
-      <BannImg>
-        <Banner src={user.profile.bannerSrc} />
-        <Avatar src={user.profile.avatarSrc} />
-        {user.profile.isBeingFollowedByYou ? (
-          <Following>Following</Following>
-        ) : null}
-      </BannImg>
-
-      {/* 2eme div */}
-      <InfoContainer>
-        <DisplayName>{user.profile.displayName}</DisplayName>
-        <HandleContainer>
-          <span>@{user.profile.handle}</span>
-          {user.profile.isFollowingYou ? (
-            <FollowYou>Follows You</FollowYou>
+    <>
+      <ParentContainer>
+        <BannImg>
+          <Banner src={user.profile.bannerSrc} />
+          <Avatar src={user.profile.avatarSrc} />
+          {user.profile.isBeingFollowedByYou ? (
+            <Following>Following</Following>
           ) : null}
-        </HandleContainer>
-        <Bio>{user.profile.bio}</Bio>
-        <LocationDiv>
-          <Loc>
-            <HiOutlineMapPin />
-            <span>{user.profile.location}</span>
-          </Loc>
-          <Time>
-            <HiOutlineCalendarDays />
-            <span>Joined {formattedTime}</span>
-          </Time>
-        </LocationDiv>
-        <Followers>
-          <span>
-            <b>{user.profile.numFollowing}</b> Following
-          </span>
-          <span>
-            <b>{user.profile.numFollowers}</b> Followers
-          </span>
-        </Followers>
-      </InfoContainer>
+        </BannImg>
 
-      {/* 3eme div */}
-      <Actions>
-        <ActionTweet>Tweets</ActionTweet>
-        <Action>Media</Action>
-        <Action>Likes</Action>
-      </Actions>
-    </ParentContainer>
+        {/* 2eme div */}
+        <InfoContainer>
+          <DisplayName>{user.profile.displayName}</DisplayName>
+          <HandleContainer>
+            <span>@{user.profile.handle}</span>
+            {user.profile.isFollowingYou ? (
+              <FollowYou>Follows You</FollowYou>
+            ) : null}
+          </HandleContainer>
+          <Bio>{user.profile.bio}</Bio>
+          <LocationDiv>
+            <Loc>
+              <HiOutlineMapPin />
+              <span>{user.profile.location}</span>
+            </Loc>
+            <Time>
+              <HiOutlineCalendarDays />
+              <span>Joined {formattedTime}</span>
+            </Time>
+          </LocationDiv>
+          <Followers>
+            <span>
+              <b>{user.profile.numFollowing}</b> Following
+            </span>
+            <span>
+              <b>{user.profile.numFollowers}</b> Followers
+            </span>
+          </Followers>
+        </InfoContainer>
+
+        {/* 3eme div */}
+        <Actions>
+          <ActionTweet>Tweets</ActionTweet>
+          <Action>Media</Action>
+          <Action>Likes</Action>
+        </Actions>
+      </ParentContainer>
+
+      {tweetFeed &&
+        tweetFeed.tweetIds &&
+        tweetFeed.tweetIds.map((id) => {
+          const tweet = tweetFeed.tweetsById[id];
+          const formattedTimestamp = format(
+            new Date(tweet.timestamp),
+            "MMM dd"
+          );
+
+          let retweetCount = 0;
+          if (tweet.retweetFrom) {
+            retweetCount++;
+          }
+
+          return (
+            <TweetContainer key={tweet.id}>
+              <div>
+                {tweet.retweetFrom && (
+                  <>
+                    <Retweets>
+                      <HiArrowPath size={20} />
+                      {tweet.retweetFrom.displayName} Remeowed
+                    </Retweets>
+                  </>
+                )}
+              </div>
+              <TweetUser>
+                <Img src={tweet.author.avatarSrc} />
+                <DisplayNameTweet>{tweet.author.displayName}</DisplayNameTweet>
+                <TweetHandle>@{tweet.author.handle}</TweetHandle>
+                <span> ·</span>
+                <DateTweet>{formattedTimestamp}th</DateTweet>
+              </TweetUser>
+              <Tweets>
+                <TweetStatus>{tweet.status}</TweetStatus>
+                {tweet.media &&
+                  tweet.media.map((media) => {
+                    return <TweetImg key={media.url} src={media.url} />;
+                  })}
+              </Tweets>
+              <TweetActions retweetCount={retweetCount} />
+            </TweetContainer>
+          );
+        })}
+    </>
   );
 };
 
@@ -202,5 +271,71 @@ const ActionTweet = styled.p`
 const InfoContainer = styled.div`
   /* border-bottom: 1px solid #e1e8ed; */
   /* border-bottom: 1px solid green; */
+`;
+
+const TweetContainer = styled.div`
+  padding: 25px;
+  border-bottom: 1px solid #e1e8ed;
+  /* border-left: 1px solid #e1e8ed;
+  border-right: 1px solid #e1e8ed;
+  border-top: 1px solid #e1e8ed; */
+`;
+
+const Retweets = styled.span`
+  display: flex;
+  gap: 5px;
+  margin-left: 50px;
+  margin-bottom: 5px;
+  color: gray;
+`;
+
+const TweetUser = styled.div`
+  display: flex;
+`;
+
+const Img = styled.img`
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+`;
+
+const DisplayNameTweet = styled.span`
+  font-weight: bold;
+  margin-left: 10px;
+`;
+
+const TweetHandle = styled.span`
+  margin-left: 3px;
+  padding-right: 3px;
+`;
+
+const DateTweet = styled.span`
+  margin-left: 5px;
+`;
+
+const TweetImg = styled.img`
+  margin-left: 70px;
+  height: 300px;
+  width: 500px;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+`;
+
+const TweetStatus = styled.span`
+  margin-left: 70px;
+  margin-top: -40px;
+`;
+
+const Tweets = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SpinnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 80px;
 `;
 export default Profile;
