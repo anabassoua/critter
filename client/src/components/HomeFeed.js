@@ -16,7 +16,7 @@ const HomeFeed = () => {
   const [reload, setReload] = useState(false);
   const [trackChar, setTrackChar] = useState("");
   const [limit, setLimit] = useState(280);
-  const [color, setColor] = useState("black");
+  const [color, setColor] = useState("#D3D3D3");
   const { currentUser } = useContext(CurrentUserContext);
 
   const handleChange = (event) => {
@@ -26,12 +26,12 @@ const HomeFeed = () => {
   };
 
   const updateColor = () => {
-    if (limit < 0) {
+    if (limit <= 0) {
       setColor("red");
     } else if (limit <= 55) {
       setColor("#FFEA55");
     } else {
-      setColor("black");
+      setColor("#D3D3D3");
     }
   };
 
@@ -104,10 +104,11 @@ const HomeFeed = () => {
         ></Textarea>
         <CurrentUserAvatar src={currentUser && currentUser.profile.avatarSrc} />
         <div>
-          {trackChar ? (
-            <CharLimit style={{ color: color }}>{limit}</CharLimit>
-          ) : null}
-          <Button onClick={postTweet} disabled={limit < 0}>
+          <CharLimit style={{ color: color }}>{limit}</CharLimit>
+          <Button
+            onClick={postTweet}
+            disabled={trackChar.length === 0 || limit < 0}
+          >
             Meow
           </Button>
         </div>
