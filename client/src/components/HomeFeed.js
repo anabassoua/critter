@@ -7,18 +7,37 @@ import { Link } from "react-router-dom";
 import { CurrentUserContext } from "./CurrentUserContext";
 import Spinner from "./Spinner";
 import { spinner3 } from "react-icons-kit/icomoon/spinner3";
+import ErrorPage from "./ErrorPage";
 
 const HomeFeed = () => {
   const [allTweets, setAllTweets] = useState([]);
   const [error, setError] = useState(false);
   const [tweetLoading, setTweetLoading] = useState(true);
   const [reload, setReload] = useState(false);
+  const [trackChar, setTrackChar] = useState("");
+  const [limit, setLimit] = useState(280);
+  const [color, setColor] = useState("black");
   const { currentUser } = useContext(CurrentUserContext);
+
+  const handleChange = (event) => {
+    setTrackChar(event.target.value);
+    setLimit(280 - event.target.value.length);
+    updateColor();
+  };
+
+  const updateColor = () => {
+    if (limit < 0) {
+      setColor("red");
+    } else if (limit <= 55) {
+      setColor("#FFEA55");
+    } else {
+      setColor("black");
+    }
+  };
 
   const postTweet = (event) => {
     event.preventDefault();
-    const tweetText = document.getElementById("tweetText").value;
-    const tweet = { status: tweetText };
+    const tweet = { status: trackChar };
 
     fetch("/api/tweet", {
       method: "POST",
@@ -36,6 +55,7 @@ const HomeFeed = () => {
         }
       })
       .then((resData) => {
+        setTrackChar("");
         console.log("postTweet data", resData);
       })
       .catch((err) => {
@@ -54,8 +74,9 @@ const HomeFeed = () => {
         setTweetLoading(false);
       })
       .catch((error) => {
+        console.log("error", error);
         setError(true);
-        console.log(error);
+        setTweetLoading(false);
       });
   }, [reload]);
 
@@ -68,18 +89,32 @@ const HomeFeed = () => {
   }
 
   if (error) {
-    return <div>an error occurs</div>;
+    return <ErrorPage />;
   }
 
   return (
     <>
       <Header>Home</Header>
       <div>
-        <Textarea id="tweetText" placeholder="What's Happening ?"></Textarea>
+        <Textarea
+          onChange={handleChange}
+          id="tweetText"
+          placeholder="What's Happening ?"
+          value={trackChar}
+        ></Textarea>
         <CurrentUserAvatar src={currentUser && currentUser.profile.avatarSrc} />
-        <Button onClick={postTweet}>Meow</Button>
+        <div>
+          {trackChar ? (
+            <CharLimit style={{ color: color }}>{limit}</CharLimit>
+          ) : null}
+          <Button onClick={postTweet} disabled={limit < 0}>
+            Meow
+          </Button>
+        </div>
       </div>
-      {tweetLoading ? (
+      {error ? (
+        <ErrorPage />
+      ) : tweetLoading ? (
         <SpinnerContainer>
           <Spinner icon={spinner3} size={35} />
         </SpinnerContainer>
@@ -168,6 +203,16 @@ const Button = styled.button`
   padding: 10px 20px;
   border-style: none;
   cursor: pointer;
+
+  &:disabled {
+    background-color: #a890ec;
+  }
+`;
+
+const CharLimit = styled.div`
+  position: absolute;
+  right: 375px;
+  top: 237px;
 `;
 
 const TweetContainer = styled.div`
