@@ -50,13 +50,14 @@ const HomeFeed = () => {
       .then((res) => {
         if (res.status === 200) {
           setReload(!reload);
-          console.log("res", res);
           return res.json();
         }
       })
       .then((resData) => {
         setTrackChar("");
-        console.log("postTweet data", resData);
+        if (resData === undefined) {
+          window.alert("Failed to post tweet. Please try again");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -64,17 +65,15 @@ const HomeFeed = () => {
   };
 
   useEffect(() => {
-    console.log("usefectr running");
     setTweetLoading(true);
     fetch("/api/me/home-feed")
       .then((res) => res.json())
       .then((resData) => {
-        console.log("resData", resData);
         setAllTweets(resData);
         setTweetLoading(false);
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log(error);
         setError(true);
         setTweetLoading(false);
       });

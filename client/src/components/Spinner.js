@@ -12,6 +12,7 @@ to {
 
 const Spinning = styled(Icon)`
   animation: ${spin} 2s linear infinite;
+  color: gray;
 `;
 
 const Spinner = ({ icon, size }) => {

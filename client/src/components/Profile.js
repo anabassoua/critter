@@ -33,7 +33,6 @@ const Profile = () => {
     fetch(`/api/${profileId}/feed`)
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         setTweetFeed(resData);
         setLoading(false);
       })
@@ -50,12 +49,7 @@ const Profile = () => {
     );
   }
 
-  // console.log(user.profile);
-  // console.log(Object.entries(user.profile));
-  // console.log(Object.values(user.profile));
-  // console.log(Object.keys(user.profile));
-
-  const formattedTime = format(new Date(user.profile.joined), "MMMM dd");
+  const formattedTime = format(new Date(user.profile?.joined), "MMMM dd");
 
   return (
     <>

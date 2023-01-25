@@ -6,22 +6,26 @@ import { format } from "date-fns";
 import TweetActions from "./TweetActions";
 import Spinner from "./Spinner";
 import { spinner3 } from "react-icons-kit/icomoon/spinner3";
+import ErrorPage from "./ErrorPage";
 
 const TweetDetails = () => {
   const [singleTweet, setSingleTweet] = useState({});
   const [loading, setLoading] = useState(true);
   const { tweetId } = useParams();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     fetch(`/api/tweet/${tweetId}`)
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         setSingleTweet(resData);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setError(true);
+        console.log(err);
+      });
   }, []);
 
   if (loading) {
@@ -30,6 +34,10 @@ const TweetDetails = () => {
         <Spinner icon={spinner3} size={35} />
       </SpinnerContainer>
     );
+  }
+
+  if (error) {
+    return <ErrorPage />;
   }
 
   const formattedTimestamp = format(

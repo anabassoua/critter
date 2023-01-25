@@ -20,6 +20,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 90px;
+  height: 100vh;
 `;
 const Link = styled.a`
   color: blue;
