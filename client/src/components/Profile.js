@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { HiOutlineMapPin } from "react-icons/hi2";
 import { HiOutlineCalendarDays } from "react-icons/hi2";
 import { HiArrowPath } from "react-icons/hi2";
@@ -133,7 +133,7 @@ const Profile = () => {
                 <span> ·</span>
                 <DateTweet>{formattedTimestamp}th</DateTweet>
               </TweetUser>
-              <Tweets>
+              <Tweets to={`/tweet/${tweet.id}`}>
                 <TweetStatus>{tweet.status}</TweetStatus>
                 {tweet.media &&
                   tweet.media.map((media) => {
@@ -321,9 +321,11 @@ const TweetStatus = styled.span`
   margin-top: -40px;
 `;
 
-const Tweets = styled.div`
+const Tweets = styled(Link)`
   display: flex;
   flex-direction: column;
+  color: inherit;
+  text-decoration: none;
 `;
 
 const SpinnerContainer = styled.div`

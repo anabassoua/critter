@@ -88,7 +88,11 @@ const HomeFeed = () => {
   }
 
   if (error) {
-    return <ErrorPage />;
+    return (
+      <Err>
+        <ErrorPage />
+      </Err>
+    );
   }
 
   return (
@@ -169,6 +173,14 @@ const HomeFeed = () => {
     </>
   );
 };
+
+const Err = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 120px;
+  height: 100vh;
+`;
 const Header = styled.h1`
   margin-left: 15px;
 `;
