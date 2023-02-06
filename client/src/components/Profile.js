@@ -167,7 +167,7 @@ const Avatar = styled.img`
   margin-bottom: 110px;
   border-radius: 50%;
   border: 3px solid #fff;
-  left: 340px;
+  left: 5px;
   top: 170px;
 `;
 
