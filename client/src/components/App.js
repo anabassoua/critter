@@ -36,6 +36,8 @@ const AppContainer = styled.div`
 const RightContainer = styled.div`
   /* flex: 3; */
   width: 55%;
+  box-sizing: border-box;
+  position: relative;
   border-left: 1px solid #e1e8ed;
   border-right: 1px solid #e1e8ed;
   padding: 0;
