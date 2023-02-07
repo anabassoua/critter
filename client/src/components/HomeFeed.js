@@ -88,7 +88,11 @@ const HomeFeed = () => {
   }
 
   if (error) {
-    return <ErrorPage />;
+    return (
+      <Err>
+        <ErrorPage />
+      </Err>
+    );
   }
 
   return (
@@ -102,7 +106,7 @@ const HomeFeed = () => {
           value={trackChar}
         ></Textarea>
         <CurrentUserAvatar src={currentUser && currentUser.profile.avatarSrc} />
-        <div>
+        <Post>
           <CharLimit style={{ color: color }}>{limit}</CharLimit>
           <Button
             onClick={postTweet}
@@ -110,7 +114,7 @@ const HomeFeed = () => {
           >
             Meow
           </Button>
-        </div>
+        </Post>
       </div>
       {error ? (
         <ErrorPage />
@@ -169,6 +173,14 @@ const HomeFeed = () => {
     </>
   );
 };
+
+const Err = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 120px;
+  height: 100vh;
+`;
 const Header = styled.h1`
   margin-left: 15px;
 `;
@@ -195,7 +207,7 @@ const Textarea = styled.textarea`
 
 const Button = styled.button`
   position: absolute;
-  right: 290px;
+  right: 3%;
   top: 230px;
   border-radius: 50px;
   background-color: #5e2eff;
@@ -211,7 +223,7 @@ const Button = styled.button`
 
 const CharLimit = styled.div`
   position: absolute;
-  right: 375px;
+  right: 85px;
   top: 237px;
 `;
 
@@ -283,11 +295,11 @@ const Tweets = styled(Link)`
 `;
 
 const CurrentUserAvatar = styled.img`
-  height: 50px;
-  left: 320px;
-  top: 100px;
-  border-radius: 50%;
   position: absolute;
+  height: 50px;
+  left: 1%;
+  top: 90px;
+  border-radius: 50%;
 `;
 
 const SpinnerContainer = styled.div`
@@ -296,4 +308,12 @@ const SpinnerContainer = styled.div`
   justify-content: center;
   margin-top: 80px;
 `;
+
+const Post = styled.div`
+  position: absolute;
+  display: flex;
+  right: 2%;
+  top: -10px;
+`;
+
 export default HomeFeed;
