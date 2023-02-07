@@ -54,9 +54,11 @@ const Profile = () => {
   return (
     <>
       <ParentContainer>
-        <BannImg>
+        <ContainerBanner>
           <Banner src={user.profile.bannerSrc} />
           <Avatar src={user.profile.avatarSrc} />
+        </ContainerBanner>
+        <BannImg>
           {user.profile.isBeingFollowedByYou ? (
             <Following>Following</Following>
           ) : null}
@@ -155,10 +157,15 @@ const ParentContainer = styled.div`
   border-bottom: 1px solid #e1e8ed;
 `;
 
+const ContainerBanner = styled.div`
+  position: relative;
+`;
+
 const Banner = styled.img`
   background-position: cover;
-  position: relative;
+  position: absolute;
   width: 100%;
+  z-index: 1;
 `;
 
 const Avatar = styled.img`
@@ -169,6 +176,7 @@ const Avatar = styled.img`
   border: 3px solid #fff;
   left: 5px;
   top: 170px;
+  z-index: 2;
 `;
 
 const Following = styled.p`
