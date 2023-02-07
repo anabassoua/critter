@@ -341,5 +341,6 @@ const SpinnerContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 80px;
+  max-width: 100%;
 `;
 export default Profile;
