@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { HiOutlineMapPin } from "react-icons/hi2";
 import { HiOutlineCalendarDays } from "react-icons/hi2";
 import { HiArrowPath } from "react-icons/hi2";
@@ -54,11 +54,9 @@ const Profile = () => {
   return (
     <>
       <ParentContainer>
-        <ContainerBanner>
+        <BannImg>
           <Banner src={user.profile.bannerSrc} />
           <Avatar src={user.profile.avatarSrc} />
-        </ContainerBanner>
-        <BannImg>
           {user.profile.isBeingFollowedByYou ? (
             <Following>Following</Following>
           ) : null}
@@ -135,7 +133,7 @@ const Profile = () => {
                 <span> ·</span>
                 <DateTweet>{formattedTimestamp}th</DateTweet>
               </TweetUser>
-              <Tweets to={`/tweet/${tweet.id}`}>
+              <Tweets>
                 <TweetStatus>{tweet.status}</TweetStatus>
                 {tweet.media &&
                   tweet.media.map((media) => {
@@ -157,15 +155,10 @@ const ParentContainer = styled.div`
   border-bottom: 1px solid #e1e8ed;
 `;
 
-const ContainerBanner = styled.div`
-  position: relative;
-`;
-
 const Banner = styled.img`
   background-position: cover;
-  position: absolute;
+  position: relative;
   width: 100%;
-  z-index: 1;
 `;
 
 const Avatar = styled.img`
@@ -174,9 +167,8 @@ const Avatar = styled.img`
   margin-bottom: 110px;
   border-radius: 50%;
   border: 3px solid #fff;
-  left: 5px;
+  left: 340px;
   top: 170px;
-  z-index: 2;
 `;
 
 const Following = styled.p`
@@ -329,11 +321,9 @@ const TweetStatus = styled.span`
   margin-top: -40px;
 `;
 
-const Tweets = styled(Link)`
+const Tweets = styled.div`
   display: flex;
   flex-direction: column;
-  color: inherit;
-  text-decoration: none;
 `;
 
 const SpinnerContainer = styled.div`
@@ -341,6 +331,5 @@ const SpinnerContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 80px;
-  max-width: 100%;
 `;
 export default Profile;
