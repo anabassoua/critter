@@ -29,15 +29,17 @@ You'll need two active terminals to be able to run this application properly.
  View the home feed
 
 When navigating to the root URL `/`, the user should see a list of tweets from the accounts that the current user follows.
+![index-view](https://github.com/anabassoua/critter/assets/48926271/cab65f51-e270-40b2-a5f0-a4920dc100ee)
 
-![index-view](https://github.com/anabassoua/twitter-clone/assets/48926271/a840a7f9-257a-4618-921e-e9c2e6d37167)
 
 Post a tweet
 
-![post-tweet](https://github.com/anabassoua/twitter-clone/assets/48926271/3621f607-d3e4-4738-bc12-06b98f84a233)
+![post-tweet](https://github.com/anabassoua/critter/assets/48926271/d11412be-4e9f-43b5-b373-725a4f95a9c2)
+
 
 View a profile page
 
-![ProfilePageFollowersFollowing](https://github.com/anabassoua/twitter-clone/assets/48926271/517ba8fc-b79b-4588-9a1c-5c8dc2cb8bff)
+![ProfilePageFollowersFollowing](https://github.com/anabassoua/critter/assets/48926271/b28fc725-9976-4e14-99a0-31c8cd2a486c)
+
 
 
