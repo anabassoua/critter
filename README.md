@@ -29,6 +29,7 @@ You'll need two active terminals to be able to run this application properly.
  View the home feed
 
 When navigating to the root URL `/`, the user should see a list of tweets from the accounts that the current user follows.
+
 ![index-view](https://github.com/anabassoua/critter/assets/48926271/cab65f51-e270-40b2-a5f0-a4920dc100ee)
 
 
